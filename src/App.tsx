@@ -38,7 +38,7 @@ export const App = () => {
     if (!hasError) {
       const newTodo = {
         userId: parseInt(selectValue),
-        id: Math.max(...todos.map(todo => todo.id)) + 1,
+        id: todos.length > 0 ? Math.max(...todos.map(todo => todo.id)) + 1 : 1,
         title: title,
         completed: false,
         user: getUserById(parseInt(selectValue)),
@@ -50,14 +50,15 @@ export const App = () => {
     }
   }
 
-
   return (
     <div className="App">
       <h1>Add todo form</h1>
 
       <form
         onSubmit={event => handleButtonSubmit(event)}
-        action="/api/todos" method="POST">
+        action="/api/todos"
+        method="POST"
+      >
         <div className="field">
           <span>Title: </span>
           <input
@@ -70,12 +71,14 @@ export const App = () => {
             data-cy="titleInput"
             value={title}
           />
-          {hasErrorTitle && <span className="error">Please enter a title </span>}
+          {hasErrorTitle && (
+            <span className="error">Please enter a title </span>
+          )}
         </div>
 
         <div className="field">
           <span className="">User: </span>
-          <select 
+          <select
             value={selectValue}
             onChange={event => {
               setHasErrorUser(false);
@@ -96,10 +99,7 @@ export const App = () => {
           {hasErrorUser && <span className="error">Please choose a user </span>}
         </div>
 
-        <button
-          type="submit"
-          data-cy="submitButton"
-        >
+        <button type="submit" data-cy="submitButton">
           Add
         </button>
       </form>
